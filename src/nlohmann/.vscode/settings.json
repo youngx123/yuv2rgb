@@ -1,0 +1,9 @@
+{
+	"files.associations": {
+		"cassert": "cpp",
+		"vector": "cpp",
+		"fstream": "cpp",
+		"deque": "cpp",
+		"string": "cpp"
+	}
+}

@@ -1,0 +1,5 @@
+{
+    "model_file" : "./multi_label_classification.dlc",
+    "input_files": "./test_img" ,
+    "use_quant"  : false    
+}
