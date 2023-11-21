@@ -22,9 +22,6 @@ class UYVYReader:
         data = np.frombuffer(data, dtype=np.uint8)
 
         yuv = data.reshape(self.height, self.width, 2)
-        plt.title("y channel")
-        plt.imshow(yuv[..., 1])
-        plt.show()
 
         rgb = cv2.cvtColor(yuv, cv2.COLOR_YUV2RGB_UYVY)
         plt.title("opencv to rgb")
@@ -158,6 +155,7 @@ def uyvy_read():
         plt.imshow(res.numpy() / 255.0)
         plt.show()
 
+
 def exprot_onnx():
     """
     export uyvy Convert model to onnx
@@ -179,6 +177,8 @@ def exprot_onnx():
         training=torch.onnx.TrainingMode.EVAL,
         verbose=1
     )
+
+
 if __name__ == "__main__":
     """
     a = torch.from_numpy(np.array([[1,2,3,4,5],[6,7,8,9,0]]))

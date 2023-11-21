@@ -82,8 +82,6 @@ class NV21Reader:
         data = np.frombuffer(data, dtype='<' + str(self.frame_len) + 'B')
         # yuv0 = data.reshape(int(self.height * 1.5), self.width)
 
-        # rgb0 = cv2.cvtColor(yuv0, cv2.COLOR_YUV2RGB_NV21)
-
         yuv = data.reshape(int(self.height * 1.5), self.width)
         rgb = np.zeros((self.height, self.width, 3), dtype=np.float64)
 
@@ -122,7 +120,7 @@ class NV21Reader:
         data = np.frombuffer(data, dtype=np.uint8)
 
         yuv = data.reshape(int(self.height * 1.5), self.width)
-        # rgb_cv2 = cv2.cvtColor(yuv, cv2.COLOR_YUV2RGB_NV21)
+
         # convert to rgb
         y = yuv[:self.height, :]
         vu = yuv[self.height:, :]
@@ -183,10 +181,10 @@ class NV21Convert(nn.Module):
 
         vu = yuv[..., self.height:, :]
         h, w = self.height // 2, self.width // 2
-        v = vu[0, 0,:, 0::2]
+        v = vu[0, 0, :, 0::2]
         v = v.reshape((h, w, 1)) - 127.5
 
-        u = vu[0, 0, :, 1::2,]
+        u = vu[0, 0, :, 1::2, ]
         u = u.reshape((h, w, 1)) - 127.5
 
         y = y.reshape((h, w, 1))
@@ -200,7 +198,7 @@ class NV21Convert(nn.Module):
 
     def forward(self, yuv):
         """
-        full image size , maybe have some error in dimention transpose
+        full image size
         :param yuv:  8UC1
         :return:
         """
@@ -230,7 +228,7 @@ class NV21Convert(nn.Module):
 
         y = y.reshape((self.height, self.width, 1))
 
-        r = y  + 1.140 * v
+        r = y + 1.140 * v
         g = y - 0.394 * u - 0.581 * v
         b = y + 2.032 * u
 
@@ -264,7 +262,7 @@ def nv21_read():
 def exprot_onnx():
     size = (720, 1280)
     model = NV21Convert(size)
-    input_tensor = torch.randn(1, 1, int(size[0]*1.5), size[1])
+    input_tensor = torch.randn(1, 1, int(size[0] * 1.5), size[1])
     onnx_name = "nv21_half_size.onnx"
     model.eval()
 
